@@ -22,6 +22,7 @@
 		0D4DE8A41996C1D5001B8B0C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D4DE8831996C1D4001B8B0C /* UIKit.framework */; };
 		0D4DE8AC1996C1D5001B8B0C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0D4DE8AA1996C1D5001B8B0C /* InfoPlist.strings */; };
 		0D4DE8AE1996C1D5001B8B0C /* Daily_NotesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D4DE8AD1996C1D5001B8B0C /* Daily_NotesTests.m */; };
+		0D4DE8B91996C49D001B8B0C /* HGDNData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D4DE8B81996C49D001B8B0C /* HGDNData.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,8 @@
 		0D4DE8A91996C1D5001B8B0C /* Daily NotesTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Daily NotesTests-Info.plist"; sourceTree = "<group>"; };
 		0D4DE8AB1996C1D5001B8B0C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		0D4DE8AD1996C1D5001B8B0C /* Daily_NotesTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Daily_NotesTests.m; sourceTree = "<group>"; };
+		0D4DE8B71996C49D001B8B0C /* HGDNData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HGDNData.h; sourceTree = "<group>"; };
+		0D4DE8B81996C49D001B8B0C /* HGDNData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HGDNData.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +88,8 @@
 		0D4DE8731996C1D4001B8B0C = {
 			isa = PBXGroup;
 			children = (
+				0D4DE8B71996C49D001B8B0C /* HGDNData.h */,
+				0D4DE8B81996C49D001B8B0C /* HGDNData.m */,
 				0D4DE8851996C1D4001B8B0C /* Daily Notes */,
 				0D4DE8A71996C1D5001B8B0C /* Daily NotesTests */,
 				0D4DE87E1996C1D4001B8B0C /* Frameworks */,
@@ -259,6 +264,7 @@
 				0D4DE88C1996C1D5001B8B0C /* main.m in Sources */,
 				0D4DE8961996C1D5001B8B0C /* HGDNMasterViewController.m in Sources */,
 				0D4DE8901996C1D5001B8B0C /* HGDNAppDelegate.m in Sources */,
+				0D4DE8B91996C49D001B8B0C /* HGDNData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -386,7 +392,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Daily Notes/Daily Notes-Prefix.pch";
 				INFOPLIST_FILE = "Daily Notes/Daily Notes-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -399,7 +407,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Daily Notes/Daily Notes-Prefix.pch";
 				INFOPLIST_FILE = "Daily Notes/Daily Notes-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

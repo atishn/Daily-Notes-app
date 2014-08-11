@@ -7,8 +7,8 @@
 //
 
 #import "HGDNMasterViewController.h"
-
 #import "HGDNDetailViewController.h"
+#import "HGDNData.h"
 
 @interface HGDNMasterViewController () {
     NSMutableArray *_objects;
@@ -25,11 +25,27 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self makeObjects];
 	// Do any additional setup after loading the view, typically from a nib.
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
 
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
     self.navigationItem.rightBarButtonItem = addButton;
+}
+
+// Need this to reload table when Detail View Disappear and Master View comes back
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.tableView reloadData];
+}
+
+// Update the _objects reference as it needs to be taken up back from HGDNData table keys if Notes been updated during edit.
+-(void)makeObjects{
+    _objects = [NSMutableArray arrayWithArray:[[HGDNData getAllNotes] allKeys]];
+    
+    [_objects sortUsingComparator:^NSComparisonResult(NSDate *obj1, NSDate *obj2) {
+        return [obj2 compare: obj1];
+    }];
 }
 
 - (void)didReceiveMemoryWarning
@@ -40,12 +56,19 @@
 
 - (void)insertNewObject:(id)sender
 {
-    if (!_objects) {
-        _objects = [[NSMutableArray alloc] init];
-    }
-    [_objects insertObject:[NSDate date] atIndex:0];
+    // Ensure unique key for each note created.
+    
+    NSString *key= [[NSDate date] description];
+    [HGDNData setNote:kDefaultText forKey:key];
+    [HGDNData setCurrentKey:key];
+    [_objects insertObject:key atIndex:0];
+    
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    
+    // Set up a self execute segue when new note get created.
+    
+    [self performSegueWithIdentifier:kDetailView sender:self];
 }
 
 #pragma mark - Table View
@@ -64,8 +87,8 @@
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
 
-    NSDate *object = _objects[indexPath.row];
-    cell.textLabel.text = [object description];
+    NSString *object = _objects[indexPath.row];
+    cell.textLabel.text = [[HGDNData getAllNotes] objectForKey:object];
     return cell;
 }
 
@@ -78,6 +101,11 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
+        
+        // Need to update persistent storage once cell has been deleted.
+        [HGDNData removeNoteForKey:[_objects objectAtIndex:indexPath.row]];
+        [HGDNData saveNotes];
+        
         [_objects removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     } else if (editingStyle == UITableViewCellEditingStyleInsert) {
@@ -103,9 +131,11 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([[segue identifier] isEqualToString:@"showDetail"]) {
+    if ([[segue identifier] isEqualToString:kDetailView]) {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        NSDate *object = _objects[indexPath.row];
+        
+        // Key is String now.
+        NSString *object = _objects[indexPath.row];
         [[segue destinationViewController] setDetailItem:object];
     }
 }

@@ -7,12 +7,15 @@
 //
 
 #import "HGDNAppDelegate.h"
+#import "HGDNData.h"
 
 @implementation HGDNAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+ 
+    [HGDNData getAllNotes];
     return YES;
 }
 							
